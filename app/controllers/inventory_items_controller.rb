@@ -4,8 +4,8 @@ class InventoryItemsController < ApplicationController
     @inventory_items = InventoryItem.includes(:product, :location).order(created_at: :desc)
     if @query.present?
       @inventory_items = @inventory_items.joins(:product).where(
-        "inventory_items.barcode ILIKE :query OR products.sku ILIKE :query OR products.name ILIKE :query",
-        query: "%#{@query}%"
+        "LOWER(inventory_items.barcode) LIKE :query OR LOWER(products.sku) LIKE :query OR LOWER(products.name) LIKE :query",
+        query: "%#{@query.downcase}%"
       )
     end
   end
