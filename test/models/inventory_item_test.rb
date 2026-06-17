@@ -1,11 +1,12 @@
 require "test_helper"
 
 class InventoryItemTest < ActiveSupport::TestCase
-  test "assigns barcode from product sku and sequence number" do
-    item = InventoryItem.new(product: products(:one), location: locations(:one), sequence_number: 2)
+  test "assigns next sequence number and barcode from product sku" do
+    item = InventoryItem.new(product: products(:one), location: locations(:one))
 
     assert item.valid?
     assert_equal "ABC-001-000002", item.barcode
+    assert_equal 2, item.sequence_number
   end
 
   test "requires sequence number to be unique per product" do
@@ -19,6 +20,13 @@ class InventoryItemTest < ActiveSupport::TestCase
     item = InventoryItem.new(product: products(:two), location: locations(:one), sequence_number: 2)
 
     assert item.valid?
+  end
+
+  test "does not override explicitly assigned sequence number" do
+    item = InventoryItem.new(product: products(:one), location: locations(:one), sequence_number: 10)
+
+    assert item.valid?
+    assert_equal "ABC-001-000010", item.barcode
   end
 
   test "detects missing required details" do

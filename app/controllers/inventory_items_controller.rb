@@ -48,6 +48,6 @@ class InventoryItemsController < ApplicationController
   end
 
   def inventory_item_params
-    params.expect(inventory_item: %i[product_id location_id sequence_number barcode gtin expiration_date status])
+    params.expect(inventory_item: %i[product_id location_id gtin expiration_date status])
   end
 end

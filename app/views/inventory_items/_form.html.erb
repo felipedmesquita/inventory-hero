@@ -14,14 +14,10 @@
     </div>
   </div>
 
-  <div class="grid gap-4 sm:grid-cols-3">
-    <div>
-      <%= form.label :sequence_number, class: "block text-sm font-medium text-slate-700" %>
-      <%= form.number_field :sequence_number, min: 1, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm", required: true %>
-    </div>
-    <div>
-      <%= form.label :barcode, class: "block text-sm font-medium text-slate-700" %>
-      <%= form.text_field :barcode, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm" %>
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div class="rounded-md border border-slate-200 bg-slate-50 px-3 py-2">
+      <p class="text-sm font-medium text-slate-700">Sequence and barcode</p>
+      <p class="mt-1 text-sm text-slate-500">Generated automatically when the item is saved.</p>
     </div>
     <div>
       <%= form.label :status, class: "block text-sm font-medium text-slate-700" %>

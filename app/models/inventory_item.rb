@@ -13,6 +13,7 @@ class InventoryItem < ApplicationRecord
     archived: 5
   }, default: :available, validate: true
 
+  before_validation :assign_sequence_number, on: :create
   before_validation :assign_barcode
 
   validates :sequence_number,
@@ -33,6 +34,14 @@ class InventoryItem < ApplicationRecord
   end
 
   private
+
+  def assign_sequence_number
+    return if sequence_number.present? || product.blank?
+
+    product.with_lock do
+      self.sequence_number = product.inventory_items.maximum(:sequence_number).to_i + 1
+    end
+  end
 
   def assign_barcode
     return if barcode.present? || product.blank? || sequence_number.blank?

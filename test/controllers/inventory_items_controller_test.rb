@@ -25,13 +25,14 @@ class InventoryItemsControllerTest < ActionDispatch::IntegrationTest
         inventory_item: {
           product_id: products(:one).id,
           location_id: locations(:one).id,
-          sequence_number: 2,
           status: "available"
         }
       }
     end
 
     assert_redirected_to inventory_item_url(InventoryItem.last)
+    assert_equal 2, InventoryItem.last.sequence_number
+    assert_equal "ABC-001-000002", InventoryItem.last.barcode
   end
 
   test "moves inventory item" do
