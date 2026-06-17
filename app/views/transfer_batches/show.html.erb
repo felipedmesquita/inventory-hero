@@ -1,0 +1,36 @@
+<section class="space-y-6">
+  <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+    <div>
+      <p class="text-sm font-medium text-slate-500">Transfer batch #<%= @transfer_batch.id %></p>
+      <h1 class="mt-1 text-2xl font-semibold">To <%= @transfer_batch.destination_location.code %> <%= @transfer_batch.destination_location.name %></h1>
+      <p class="mt-2 text-sm text-slate-500"><%= @transfer_batch.status.humanize %></p>
+    </div>
+    <% if @transfer_batch.status_draft? %>
+      <%= button_to "Commit transfer", commit_transfer_batch_path(@transfer_batch), method: :post, class: "rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
+    <% end %>
+  </div>
+
+  <section class="overflow-hidden rounded-md border border-slate-200 bg-white">
+    <table class="min-w-full divide-y divide-slate-200">
+      <thead class="bg-slate-100">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Barcode</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Product</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Origin</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <% @transfer_batch.transfer_batch_items.each do |batch_item| %>
+          <tr>
+            <td class="px-4 py-3 font-medium"><%= link_to batch_item.inventory_item.barcode, inventory_item_path(batch_item.inventory_item), class: "text-blue-700 hover:text-blue-900" %></td>
+            <td class="px-4 py-3"><%= batch_item.inventory_item.product.sku %> <span class="text-slate-500"><%= batch_item.inventory_item.product.name %></span></td>
+            <td class="px-4 py-3"><%= batch_item.origin_location.code %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @transfer_batch.transfer_batch_items.empty? %>
+      <p class="px-4 py-6 text-sm text-slate-500">No matching inventory items.</p>
+    <% end %>
+  </section>
+</section>

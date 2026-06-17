@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Inventory Hero" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Inventory Hero">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen bg-slate-50 text-slate-950">
+    <header class="border-b border-slate-200 bg-white">
+      <div class="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+          <div>
+            <%= link_to "Inventory Hero", root_path, class: "text-xl font-semibold tracking-normal text-slate-950" %>
+            <p class="mt-1 text-sm text-slate-500">Stock, locations, and transfer control</p>
+          </div>
+          <div class="flex gap-2">
+            <%= link_to "New item", new_inventory_item_path, class: "rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
+            <%= link_to "Transfer", new_transfer_batch_path, class: "rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100" %>
+          </div>
+        </div>
+        <nav class="flex flex-wrap gap-2">
+          <%= nav_link_to "Dashboard", root_path %>
+          <%= nav_link_to "Inventory", inventory_items_path %>
+          <%= nav_link_to "Products", products_path %>
+          <%= nav_link_to "Locations", locations_path %>
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <% if notice.present? %>
+        <div class="mb-4 rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm font-medium text-green-800"><%= notice %></div>
+      <% end %>
+      <% if alert.present? %>
+        <div class="mb-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-800"><%= alert %></div>
+      <% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

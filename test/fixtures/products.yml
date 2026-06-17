@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sku: ABC-001
+  name: Test product one
+  description: First test product
+  requires_gtin: false
+  requires_expiration_date: false
+  active: true
+
+two:
+  sku: ABC-002
+  name: Test product two
+  description: Second test product
+  requires_gtin: true
+  requires_expiration_date: true
+  active: true

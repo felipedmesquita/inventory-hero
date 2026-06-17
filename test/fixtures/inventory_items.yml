@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  product: one
+  location: one
+  sequence_number: 1
+  barcode: ABC-001-000001
+  gtin:
+  expiration_date: 2026-06-16
+  status: 0
+
+two:
+  product: two
+  location: two
+  sequence_number: 1
+  barcode: ABC-002-000001
+  gtin: "7891234567890"
+  expiration_date: 2026-06-16
+  status: 0

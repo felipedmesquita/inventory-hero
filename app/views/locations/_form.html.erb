@@ -1,0 +1,32 @@
+<%= form_with model: location, class: "space-y-5 rounded-md border border-slate-200 bg-white p-4" do |form| %>
+  <% if location.errors.any? %>
+    <div class="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800"><%= location.errors.full_messages.to_sentence %></div>
+  <% end %>
+
+  <div class="grid gap-4 sm:grid-cols-[160px_1fr]">
+    <div>
+      <%= form.label :code, class: "block text-sm font-medium text-slate-700" %>
+      <%= form.text_field :code, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm", required: true %>
+    </div>
+    <div>
+      <%= form.label :name, class: "block text-sm font-medium text-slate-700" %>
+      <%= form.text_field :name, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm", required: true %>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap gap-5">
+    <label class="flex items-center gap-2 text-sm font-medium text-slate-700">
+      <%= form.check_box :inventory_counts, class: "rounded border-slate-300 text-blue-600" %>
+      Inventory counts
+    </label>
+    <label class="flex items-center gap-2 text-sm font-medium text-slate-700">
+      <%= form.check_box :active, class: "rounded border-slate-300 text-blue-600" %>
+      Active
+    </label>
+  </div>
+
+  <div class="flex gap-2">
+    <%= form.submit "Save location", class: "rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
+    <%= link_to "Cancel", locations_path, class: "rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100" %>
+  </div>
+<% end %>

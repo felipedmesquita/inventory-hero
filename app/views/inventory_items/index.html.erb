@@ -1,0 +1,37 @@
+<section class="space-y-5">
+  <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+    <div>
+      <h1 class="text-2xl font-semibold">Inventory</h1>
+      <p class="mt-1 text-sm text-slate-500"><%= pluralize(@inventory_items.count, "item") %></p>
+    </div>
+    <%= link_to "New item", new_inventory_item_path, class: "rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
+  </div>
+
+  <%= form_with url: inventory_items_path, method: :get, class: "flex gap-2" do |form| %>
+    <%= form.search_field :query, value: @query, placeholder: "Barcode, SKU, or name", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm" %>
+    <%= form.submit "Search", class: "rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100" %>
+  <% end %>
+
+  <div class="overflow-hidden rounded-md border border-slate-200 bg-white">
+    <table class="min-w-full divide-y divide-slate-200">
+      <thead class="bg-slate-100">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Barcode</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Product</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Location</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Status</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <% @inventory_items.each do |item| %>
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-3 font-medium"><%= link_to item.barcode, inventory_item_path(item), class: "text-blue-700 hover:text-blue-900" %></td>
+            <td class="px-4 py-3"><%= link_to item.product.sku, product_path(item.product), class: "font-medium text-slate-900" %> <span class="text-slate-500"><%= item.product.name %></span></td>
+            <td class="px-4 py-3"><%= link_to item.location.code, location_path(item.location), class: "text-blue-700 hover:text-blue-900" %></td>
+            <td class="px-4 py-3"><%= status_badge(item) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>

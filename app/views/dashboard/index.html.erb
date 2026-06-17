@@ -1,0 +1,71 @@
+<section class="space-y-6">
+  <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+    <div>
+      <h1 class="text-2xl font-semibold text-slate-950">Dashboard</h1>
+      <p class="mt-1 text-sm text-slate-500">Current operating snapshot</p>
+    </div>
+  </div>
+
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="rounded-md border border-slate-200 bg-white p-4">
+      <p class="text-sm text-slate-500">Products</p>
+      <p class="mt-2 text-3xl font-semibold"><%= @product_count %></p>
+    </div>
+    <div class="rounded-md border border-slate-200 bg-white p-4">
+      <p class="text-sm text-slate-500">Inventory items</p>
+      <p class="mt-2 text-3xl font-semibold"><%= @item_count %></p>
+    </div>
+    <div class="rounded-md border border-slate-200 bg-white p-4">
+      <p class="text-sm text-slate-500">Counted stock</p>
+      <p class="mt-2 text-3xl font-semibold"><%= @counted_item_count %></p>
+    </div>
+    <div class="rounded-md border border-slate-200 bg-white p-4">
+      <p class="text-sm text-slate-500">Active locations</p>
+      <p class="mt-2 text-3xl font-semibold"><%= @location_count %></p>
+    </div>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-[1fr_380px]">
+    <section class="rounded-md border border-slate-200 bg-white">
+      <div class="border-b border-slate-200 px-4 py-3">
+        <h2 class="font-semibold">Recent transfers</h2>
+      </div>
+      <div class="divide-y divide-slate-100">
+        <% if @recent_transfers.any? %>
+          <% @recent_transfers.each do |transfer| %>
+            <div class="grid gap-2 px-4 py-3 sm:grid-cols-[1fr_auto] sm:items-center">
+              <div>
+                <%= link_to transfer.inventory_item.barcode, inventory_item_path(transfer.inventory_item), class: "font-medium text-blue-700 hover:text-blue-900" %>
+                <p class="mt-1 text-sm text-slate-500"><%= transfer.origin_location.code %> to <%= transfer.destination_location.code %></p>
+              </div>
+              <time class="text-sm text-slate-500"><%= l transfer.created_at, format: :short %></time>
+            </div>
+          <% end %>
+        <% else %>
+          <p class="px-4 py-6 text-sm text-slate-500">No transfers yet.</p>
+        <% end %>
+      </div>
+    </section>
+
+    <section class="rounded-md border border-slate-200 bg-white">
+      <div class="border-b border-slate-200 px-4 py-3">
+        <h2 class="font-semibold">Locations</h2>
+      </div>
+      <div class="divide-y divide-slate-100">
+        <% if @locations.any? %>
+          <% @locations.each do |location| %>
+            <%= link_to location_path(location), class: "flex items-center justify-between px-4 py-3 hover:bg-slate-50" do %>
+              <span>
+                <span class="font-medium"><%= location.code %></span>
+                <span class="ml-2 text-sm text-slate-500"><%= location.name %></span>
+              </span>
+              <span class="text-sm text-slate-500"><%= location.inventory_items.count %></span>
+            <% end %>
+          <% end %>
+        <% else %>
+          <p class="px-4 py-6 text-sm text-slate-500">No locations yet.</p>
+        <% end %>
+      </div>
+    </section>
+  </div>
+</section>

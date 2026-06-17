@@ -1,0 +1,67 @@
+<section class="space-y-6">
+  <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+    <div>
+      <p class="text-sm font-medium text-slate-500"><%= @inventory_item.product.sku %> sequence <%= @inventory_item.sequence_number %></p>
+      <h1 class="mt-1 text-2xl font-semibold"><%= @inventory_item.barcode %></h1>
+      <p class="mt-2 text-sm text-slate-500"><%= @inventory_item.product.name %></p>
+    </div>
+    <%= status_badge(@inventory_item) %>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-[1fr_360px]">
+    <section class="space-y-6">
+      <div class="rounded-md border border-slate-200 bg-white">
+        <div class="grid divide-y divide-slate-100 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+          <div class="p-4">
+            <p class="text-sm text-slate-500">Current location</p>
+            <%= link_to "#{@inventory_item.location.code} #{@inventory_item.location.name}", location_path(@inventory_item.location), class: "mt-2 block font-semibold text-blue-700 hover:text-blue-900" %>
+          </div>
+          <div class="p-4">
+            <p class="text-sm text-slate-500">Required details</p>
+            <p class="mt-2 font-semibold <%= @inventory_item.missing_required_details? ? "text-red-700" : "text-green-700" %>">
+              <%= @inventory_item.missing_required_details? ? "Incomplete" : "Complete" %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <section class="rounded-md border border-slate-200 bg-white">
+        <div class="border-b border-slate-200 px-4 py-3">
+          <h2 class="font-semibold">Transfer history</h2>
+        </div>
+        <div class="divide-y divide-slate-100">
+          <% if @transfers.any? %>
+            <% @transfers.each do |transfer| %>
+              <div class="grid gap-2 px-4 py-3 sm:grid-cols-[1fr_auto] sm:items-center">
+                <div>
+                  <p class="font-medium"><%= transfer.origin_location.code %> to <%= transfer.destination_location.code %></p>
+                  <% if transfer.note.present? %>
+                    <p class="mt-1 text-sm text-slate-500"><%= transfer.note %></p>
+                  <% end %>
+                </div>
+                <time class="text-sm text-slate-500"><%= l transfer.created_at, format: :short %></time>
+              </div>
+            <% end %>
+          <% else %>
+            <p class="px-4 py-6 text-sm text-slate-500">No transfers yet.</p>
+          <% end %>
+        </div>
+      </section>
+    </section>
+
+    <aside class="rounded-md border border-slate-200 bg-white p-4">
+      <h2 class="font-semibold">Move item</h2>
+      <%= form_with url: move_inventory_item_path(@inventory_item), method: :post, class: "mt-4 space-y-4" do |form| %>
+        <div>
+          <%= form.label :destination_location_id, "Destination", class: "block text-sm font-medium text-slate-700" %>
+          <%= form.collection_select :destination_location_id, @locations, :id, ->(location) { "#{location.code} #{location.name}" }, { prompt: "Select location" }, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm", required: true %>
+        </div>
+        <div>
+          <%= form.label :note, class: "block text-sm font-medium text-slate-700" %>
+          <%= form.text_field :note, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm" %>
+        </div>
+        <%= form.submit "Move item", class: "w-full rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
+      <% end %>
+    </aside>
+  </div>
+</section>

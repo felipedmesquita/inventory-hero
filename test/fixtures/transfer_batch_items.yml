@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  transfer_batch: one
+  inventory_item: one
+  origin_location: one
+
+two:
+  transfer_batch: two
+  inventory_item: two
+  origin_location: two

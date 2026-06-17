@@ -1,0 +1,36 @@
+<section class="space-y-5">
+  <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+    <div>
+      <h1 class="text-2xl font-semibold">Products</h1>
+      <p class="mt-1 text-sm text-slate-500"><%= pluralize(@products.count, "product") %></p>
+    </div>
+    <%= link_to "New product", new_product_path, class: "rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
+  </div>
+
+  <div class="overflow-hidden rounded-md border border-slate-200 bg-white">
+    <table class="min-w-full divide-y divide-slate-200">
+      <thead class="bg-slate-100">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">SKU</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Name</th>
+          <th class="px-4 py-3 text-left text-xs font-semibold uppercase text-slate-500">Requirements</th>
+          <th class="px-4 py-3 text-right text-xs font-semibold uppercase text-slate-500">Items</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <% @products.each do |product| %>
+          <tr class="hover:bg-slate-50">
+            <td class="px-4 py-3 font-medium"><%= link_to product.sku, product, class: "text-blue-700 hover:text-blue-900" %></td>
+            <td class="px-4 py-3"><%= product.name %></td>
+            <td class="px-4 py-3 text-sm text-slate-500">
+              <%= "GTIN" if product.requires_gtin? %>
+              <%= "Expiration" if product.requires_expiration_date? %>
+              <%= "None" unless product.requires_gtin? || product.requires_expiration_date? %>
+            </td>
+            <td class="px-4 py-3 text-right"><%= product.inventory_items.count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</section>

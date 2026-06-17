@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Receiving
+  code: RCV
+  inventory_counts: false
+  active: true
+
+two:
+  name: Shelf A1
+  code: A1
+  inventory_counts: true
+  active: true

@@ -1,0 +1,52 @@
+<section class="space-y-6">
+  <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+    <div>
+      <p class="text-sm font-medium text-slate-500"><%= @product.sku %></p>
+      <h1 class="mt-1 text-2xl font-semibold"><%= @product.name %></h1>
+      <% if @product.description.present? %>
+        <p class="mt-2 max-w-3xl text-sm text-slate-600"><%= @product.description %></p>
+      <% end %>
+    </div>
+    <%= link_to "New item", new_inventory_item_path(product_id: @product.id), class: "rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700" %>
+  </div>
+
+  <div class="grid gap-3 sm:grid-cols-3">
+    <div class="rounded-md border border-slate-200 bg-white p-4">
+      <p class="text-sm text-slate-500">Total items</p>
+      <p class="mt-2 text-2xl font-semibold"><%= @product.inventory_items.count %></p>
+    </div>
+    <div class="rounded-md border border-slate-200 bg-white p-4">
+      <p class="text-sm text-slate-500">GTIN</p>
+      <p class="mt-2 text-sm font-medium"><%= @product.requires_gtin? ? "Required" : "Not required" %></p>
+    </div>
+    <div class="rounded-md border border-slate-200 bg-white p-4">
+      <p class="text-sm text-slate-500">Expiration</p>
+      <p class="mt-2 text-sm font-medium"><%= @product.requires_expiration_date? ? "Required" : "Not required" %></p>
+    </div>
+  </div>
+
+  <section class="rounded-md border border-slate-200 bg-white">
+    <div class="border-b border-slate-200 px-4 py-3">
+      <h2 class="font-semibold">Inventory by location</h2>
+    </div>
+    <div class="divide-y divide-slate-100">
+      <% if @items_by_location.any? %>
+        <% @items_by_location.each do |location, items| %>
+          <div class="px-4 py-3">
+            <div class="flex items-center justify-between">
+              <%= link_to "#{location.code} #{location.name}", location_path(location), class: "font-medium text-blue-700 hover:text-blue-900" %>
+              <span class="text-sm text-slate-500"><%= items.count %></span>
+            </div>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <% items.sort_by(&:sequence_number).each do |item| %>
+                <%= link_to item.sequence_number, inventory_item_path(item), class: "rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-700 hover:bg-slate-200" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="px-4 py-6 text-sm text-slate-500">No inventory items yet.</p>
+      <% end %>
+    </div>
+  </section>
+</section>
